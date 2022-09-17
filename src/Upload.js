@@ -5,6 +5,7 @@ import {
   S3Client,
   PutObjectCommand,
   EnvironmentCredentials,
+  ListObjectsCommand,
 } from "@aws-sdk/client-s3";
 // var creds = new EnvironmentCredentials('AWS');
 
@@ -61,23 +62,6 @@ const Upload = () => {
       .send(new PutObjectCommand(bucketParams))
       .then((data) => console.log(data.location))
       .catch((err) => console.error(err));
-
-    // attempt 2: https://flaviocopes.com/node-aws-s3-upload-image/
-
-    // const s3 = new AWS.S3({
-    //   accessKeyId: process.env.REACT_APP_ACCESS,
-    //   secretAccessKey: process.env.REACT_APP_SECRET,
-    // });
-    // const imageURL = "/Users/rockykamenrubio/Downloads/penguins.jpeg";
-    // const res = await fetch(imageURL);
-    // const blob = await res.buffer();
-    // console.log(blob);
-    // const uploadedImage = await s3Client
-    //   .upload(bucketParams)
-    //   .promise()
-    //   .then((data) => console.log(data.location))
-    //   .catch((err) => console.error(err));
-    // // console.log(uploadedImage);
   };
   return (
     <div>

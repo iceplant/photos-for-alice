@@ -3,6 +3,7 @@ import "./App.css";
 import React, { useRef, useState } from "react";
 import axios from "axios";
 import Upload from "./Upload.js";
+import Slideshow from "./Slideshow.js";
 
 function App() {
   const fileInputRef = useRef();
@@ -27,11 +28,22 @@ function App() {
     });
   }
 
+  const GetPhotos = async () => {
+    const bucketParams = {
+      Bucket: process.env.REACT_APP_BUCKET_NAME,
+      // Key: file.name,
+      // Body: file,
+    };
+    const command = new ListObjectsCommand(bucketParams);
+    const response = await s3Client.send(command);
+  };
+
   return (
     <div className="App">
       <h1>Photos For Alice</h1>
       <h2>upload photos</h2>
       <Upload />
+      <Slideshow />
     </div>
   );
 }
