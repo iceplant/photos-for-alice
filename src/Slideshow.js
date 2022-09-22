@@ -31,10 +31,7 @@ function Slideshow() {
   React.useEffect(() => {
     resetTimeout();
     timeoutRef.current = setTimeout(
-      () =>
-        setIndex((prevIndex) =>
-          prevIndex === colors.length - 1 ? 0 : prevIndex + 1
-        ),
+      () => setIndex((prevIndex) => prevIndex + (1 % colors.length)),
       delay
     );
 
@@ -80,14 +77,27 @@ function Slideshow() {
   return (
     <div className="slideshow">
       <Photoslist />
-
       <div
         className="slideshowSlider"
         style={{ transform: `translate3d(${-index * 100}%, 0, 0)` }}
       >
-        {colors.map((backgroundColor, index) => (
-          <div className="slide" key={index} style={{ backgroundColor }}></div>
-        ))}
+        {colors.map((backgroundColor, index) => {
+          const s3ImagePath =
+            `https://ashby-shellmound-media.s3.us-west-2.amazonaws.com/images/slideshow-images/${imageFileNames[index]}`.replace(
+              " ",
+              "+"
+            );
+
+          return (
+            <div className="slide" key={index}>
+              <img
+                className="slideshow-image"
+                src={s3ImagePath}
+                alt="cannot display"
+              ></img>
+            </div>
+          );
+        })}
       </div>
 
       <div className="slideshowDots">
