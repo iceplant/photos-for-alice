@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import CREDENTIALS from "./credentials";
 import "./Slideshow.css";
 import {
   S3Client,
@@ -8,10 +9,7 @@ import {
 
 var AWS = require("aws-sdk");
 const REGION = "us-east-1";
-const CREDENTIALS = {
-  accessKeyId: process.env.REACT_APP_ACCESS,
-  secretAccessKey: process.env.REACT_APP_SECRET,
-};
+
 const s3Client = new S3Client({ region: REGION, credentials: CREDENTIALS });
 
 const colors = ["#0088FE", "#00C49F", "#FFBB28"];
@@ -31,7 +29,7 @@ function Slideshow() {
   React.useEffect(() => {
     resetTimeout();
     timeoutRef.current = setTimeout(
-      () => setIndex((prevIndex) => prevIndex + (1 % colors.length)),
+      () => setIndex((prevIndex) => (prevIndex + 1) % imageFileNames.length),
       delay
     );
 
@@ -81,12 +79,12 @@ function Slideshow() {
         className="slideshowSlider"
         style={{ transform: `translate3d(${-index * 100}%, 0, 0)` }}
       >
-        {colors.map((backgroundColor, index) => {
-          const s3ImagePath =
-            `https://ashby-shellmound-media.s3.us-west-2.amazonaws.com/images/slideshow-images/${imageFileNames[index]}`.replace(
-              " ",
-              "+"
-            );
+        {imageFileNames.map((_, index) => {
+          const s3ImagePath = `https://photos-for-alice.s3.amazonaws.com/${imageFileNames[index]}`;
+          // `https://ashby-shellmound-media.s3.us-west-2.amazonaws.com/images/slideshow-images/${imageFileNames[index]}`.replace(
+          //   " ",
+          //   "+"
+          // );
 
           return (
             <div className="slide" key={index}>
@@ -101,7 +99,7 @@ function Slideshow() {
       </div>
 
       <div className="slideshowDots">
-        {colors.map((_, idx) => (
+        {imageFileNames.map((_, idx) => (
           <div
             key={idx}
             className={`slideshowDot${index === idx ? " active" : ""}`}
